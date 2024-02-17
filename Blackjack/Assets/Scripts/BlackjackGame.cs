@@ -10,28 +10,33 @@ public class BlackjackGame : MonoBehaviour
     private void Start()
     {
         deck = new Deck();
-        Play();
-        Debug.Log("-----");
-        Play();
-        Debug.Log("-----");
-        Play();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown("g"))
+        {
+            Play();
+        }
     }
 
     private void Play()
     {
-        Card[] p1Cards = {deck.Draw(), deck.Draw()};
-        Card[] p2Cards = {deck.Draw(), deck.Draw()};
-        int p1Value = PlayPlayer(0, p1Cards);
-        int p2Value = PlayPlayer(1, p2Cards);
+        List<Card> p1Cards = new List<Card>();
+        List<Card> p2Cards = new List<Card>();
+        p1Cards.Add(deck.Draw());
+        p1Cards.Add(deck.Draw());
+        p2Cards.Add(deck.Draw());
+        p2Cards.Add(deck.Draw());
+        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
+        int p2Value = PlayPlayer(1, p2Cards, p2Cards[1]);
         bool p1Bust = p1Value > 21;
         bool p2Bust = p2Value > 21;
-        Debug.Log(p1Value);
-        Debug.Log(p2Value);
         if(p1Bust && !p2Bust)
         {
             Debug.Log("P1 Busts, P2 Wins");
         }
-        else if(!p2Bust && p1Bust)
+        else if(p2Bust && !p1Bust)
         {
             Debug.Log("P2 Busts, P1 Wins");
         }
@@ -53,12 +58,50 @@ public class BlackjackGame : MonoBehaviour
         }
     }
 
-    private int PlayPlayer(int playerIndex, Card[] cards)
+    private int PlayPlayer(int playerIndex, List<Card> cards, Card showing)
     {
-        Debug.Log(playerIndex);
-        Debug.Log(cards[0].value);
-        Debug.Log(cards[1].value);
-        Debug.Log("========");
-        return cards[0].blackJackValue + cards[1].blackJackValue;
+        int currentValue = GetPlayerValue(cards);
+        while(currentValue < 21 && players[playerIndex].Hit(currentValue, showing))
+        {
+            Card newCard = deck.Draw();
+            cards.Add(newCard);
+            currentValue = GetPlayerValue(cards);
+            players[playerIndex].AddToHistory(true, currentValue);
+        }
+        if(currentValue < 21)
+        {
+            players[playerIndex].AddToHistory(false, currentValue);
+        }
+        PrintAllCards(cards);
+        return currentValue;
+    }
+
+    private void PrintAllCards(List<Card> cards)
+    {
+        Debug.Log("=======");
+        foreach(Card card in cards)
+        {
+            Debug.Log(card.value);
+        }
+    }
+
+    private int GetPlayerValue(List<Card> cards)
+    {
+        int numberOfAces = 0;
+        int value = 0;
+        foreach(Card card in cards)
+        {
+            if(card.value == "A")
+            {
+                numberOfAces ++;
+            }
+            value += card.Value();
+        }
+        while(value > 21 && numberOfAces > 0)
+        {
+            value -= 10;
+            numberOfAces --;
+        }
+        return value;
     }
 }
