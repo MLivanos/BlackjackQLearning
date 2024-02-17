@@ -22,7 +22,7 @@ public class Deck
         {
             for(int j=0; j<13; j++)
             {
-                Card newCard = new Card(values[j], suits[i], Math.Min(j+1,10));
+                Card newCard = new Card(values[j], suits[i]);
                 deck.Add(newCard);
             }
         }
@@ -60,13 +60,24 @@ public class Deck
 public class Card
 {
     public string value {get; private set;}
-    public int blackJackValue {get; private set;}
     public string suit {get; private set;}
+    public static Dictionary<string, int> blackjackValueLookup = new Dictionary<string, int>()
+    {
+        { "A", 11},
+        { "J", 10},
+        { "Q", 10},
+        { "K", 10},
+    };
 
-    public Card(string value_, string suit_, int blackJackValue_)
+    public Card(string value_, string suit_)
     {
         value = value_;
         suit = suit_;
-        blackJackValue = blackJackValue_;
+    }
+
+    public int Value()
+    {
+        bool faceCard = blackjackValueLookup.ContainsKey(value);
+        return faceCard ? blackjackValueLookup[value] : Int32.Parse(value);
     }
 }

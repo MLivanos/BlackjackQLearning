@@ -5,8 +5,25 @@ using UnityEngine;
 public abstract class BlackjackPlayer : MonoBehaviour
 {
     bool isLearner;
-    bool[] actionHistory;
-    int[] valueHistory;
+    List<bool> actionHistory;
+    List<int> valueHistory;
 
-    public abstract bool Play(int value, Card showing);
+    private void Start()
+    {
+        ResetHistory();
+    }
+
+    public abstract bool Hit(int value, Card showing);
+
+    public void AddToHistory(bool action, int value)
+    {
+        actionHistory.Add(action);
+        valueHistory.Add(value);
+    }
+
+    public void ResetHistory()
+    {
+        actionHistory = new List<bool>();
+        valueHistory = new List<int>();
+    }
 }
