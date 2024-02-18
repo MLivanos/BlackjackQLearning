@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RandomPlayer : BlackjackPlayer
 {
-    public override bool Hit(int value, Card showing)
+    public override bool Hit(List<Card> cards, Card showing)
     {
-        return value < 21 && Random.value < 0.5f;
+        return GetValue(cards) < 21 && Random.value < 0.5f;
     }
 }

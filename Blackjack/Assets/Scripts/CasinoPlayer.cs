@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CasinoPlayer : BlackjackPlayer
 {
-    public override bool Hit(int value, Card showing)
+    public override bool Hit(List<Card> cards, Card showing)
     {
-        return value < 17;
+        return GetValue(cards) < 17;
     }
 }

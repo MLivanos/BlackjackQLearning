@@ -4,16 +4,16 @@ using UnityEngine;
 
 public abstract class BlackjackPlayer : MonoBehaviour
 {
-    bool isLearner;
-    List<bool> actionHistory;
-    List<int> valueHistory;
+    protected bool isLearner;
+    protected List<bool> actionHistory;
+    protected List<int> valueHistory;
 
-    private void Start()
+    protected void Start()
     {
         ResetHistory();
     }
 
-    public abstract bool Hit(int value, Card showing);
+    public abstract bool Hit(List<Card> cards, Card showing);
 
     public void AddToHistory(bool action, int value)
     {
@@ -25,5 +25,25 @@ public abstract class BlackjackPlayer : MonoBehaviour
     {
         actionHistory = new List<bool>();
         valueHistory = new List<int>();
+    }
+
+    public int GetValue(List<Card> cards)
+    {
+        int numberOfAces = 0;
+        int value = 0;
+        foreach(Card card in cards)
+        {
+            if(card.value == "A")
+            {
+                numberOfAces ++;
+            }
+            value += card.Value();
+        }
+        while(value > 21 && numberOfAces > 0)
+        {
+            value -= 10;
+            numberOfAces --;
+        }
+        return value;
     }
 }

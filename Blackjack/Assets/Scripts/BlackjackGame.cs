@@ -60,12 +60,12 @@ public class BlackjackGame : MonoBehaviour
 
     private int PlayPlayer(int playerIndex, List<Card> cards, Card showing)
     {
-        int currentValue = GetPlayerValue(cards);
-        while(currentValue < 21 && players[playerIndex].Hit(currentValue, showing))
+        int currentValue = players[playerIndex].GetValue(cards);
+        while(currentValue < 21 && players[playerIndex].Hit(cards, showing))
         {
             Card newCard = deck.Draw();
             cards.Add(newCard);
-            currentValue = GetPlayerValue(cards);
+            currentValue = players[playerIndex].GetValue(cards);
             players[playerIndex].AddToHistory(true, currentValue);
         }
         if(currentValue < 21)
@@ -83,25 +83,5 @@ public class BlackjackGame : MonoBehaviour
         {
             Debug.Log(card.value);
         }
-    }
-
-    private int GetPlayerValue(List<Card> cards)
-    {
-        int numberOfAces = 0;
-        int value = 0;
-        foreach(Card card in cards)
-        {
-            if(card.value == "A")
-            {
-                numberOfAces ++;
-            }
-            value += card.Value();
-        }
-        while(value > 21 && numberOfAces > 0)
-        {
-            value -= 10;
-            numberOfAces --;
-        }
-        return value;
     }
 }
