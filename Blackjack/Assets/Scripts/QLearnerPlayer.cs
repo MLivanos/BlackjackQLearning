@@ -60,4 +60,29 @@ public class QLearnerPlayer : BlackjackPlayer
             TrainEntry(state, nextState, opponentShowing, action, reward);
         }
     }
+
+    public void SetGamma(float gamma_)
+    {
+        gamma = gamma_;
+    }
+
+    public void SetAlpha(float alpha_)
+    {
+        alpha = alpha_;
+    }
+
+    public void SetEpsilon(float epsilon_)
+    {
+        epsilon = epsilon_;
+    }
+
+    public void SetEpsilonDecay(float epsilonDecay_)
+    {
+        epsilonDecay = epsilonDecay_;
+    }
+
+    public void SetMinEpsilon(float minEpsilon_)
+    {
+        minEpsilon = minEpsilon_;
+    }
 }

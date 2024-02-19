@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class BlackjackGame : MonoBehaviour
 {
-    [SerializeField] BlackjackPlayer[] players;
+    BlackjackPlayer[] players = new BlackjackPlayer[2];
+    [SerializeField] BlackjackPlayer[] opponentPrefabs;
+    [SerializeField] BlackjackPlayer player2;
+    QLearnerPlayer player1;
     Deck deck;
     float nWins = 0.0f;
+    int epochs = 0;
 
     private void Start()
     {
+        gameObject.AddComponent<QLearnerPlayer>();
+        player1 = gameObject.GetComponent<QLearnerPlayer>();
         deck = new Deck();
-        players[0].ResetHistory();
-        players[1].ResetHistory();
+        player1.ResetHistory();
+        player2.ResetHistory();
+        players[0] = player1;
+        players[1] = player2;
     }
 
     private void Update()
@@ -102,5 +110,58 @@ public class BlackjackGame : MonoBehaviour
             players[playerIndex].AddToHistory(false, 0.0f, cards, null);
         }
         return currentValue;
+    }
+
+    private float ClampHyperparameter(string hyperparameter, float minValue=0.0f, float maxValue=1.0f)
+    {
+        return Mathf.Clamp(float.Parse(hyperparameter), minValue, maxValue);
+    }
+
+    public void SetGamma(string gammaString)
+    {
+        player1.SetGamma(ClampHyperparameter(gammaString));
+    }
+
+    public void SetAlpha(string alphaString)
+    {
+        player1.SetAlpha(ClampHyperparameter(alphaString));
+    }
+
+    public void SetEpsilon(string epsilonString)
+    {
+        player1.SetEpsilon(ClampHyperparameter(epsilonString));
+    }
+
+    public void SetMinEpsilon(string minEpsilonString)
+    {
+        player1.SetEpsilon(ClampHyperparameter(minEpsilonString));
+    }
+
+    public void SetEpsilonDecay(string epsilonDecayString)
+    {
+        player1.SetEpsilonDecay(ClampHyperparameter(epsilonDecayString));
+    }
+
+    public void SetEpochs(string epochsString)
+    {
+        epochs = int.Parse(epochsString);
+    }
+
+    public void SetOpponent(int opponentIndex)
+    {
+        players[1] = opponentPrefabs[opponentIndex];
+    }
+
+    public void Run()
+    {
+        for(int i=0; i<epochs; i++)
+        {
+            Play();
+        }
+    }
+
+    public void SetIteration(string iteration)
+    {
+
     }
 }
