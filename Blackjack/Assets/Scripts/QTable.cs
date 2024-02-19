@@ -12,9 +12,19 @@ public abstract class QTable
 
     public abstract void SetEntry(List<Card> cards, Card showing, int action, float qValue);
 
+    public QTable()
+    {
+        CreateTable();
+        PrintTable();
+    }
     public bool GetAction(List<Card> cards, Card showing)
     {
-        return GetEntry(cards, showing, 1) >= GetEntry(cards, showing, 0);
+        return GetEntry(cards, showing, 0) >= GetEntry(cards, showing, 1);
+    }
+
+    public float GetBestQValue(List<Card> cards, Card showing)
+    {
+        return Mathf.Max(GetEntry(cards, showing, 0), GetEntry(cards, showing, 1));
     }
 
     protected int GetValue(List<Card> cards)
@@ -37,7 +47,20 @@ public abstract class QTable
         return value;
     }
 
-    
+    public void PrintTable()
+    {
+        for(int i=0; i<22; i++)
+        {
+            float value = 0.0f;
+            for(int j=0; j<10; j++)
+            {
+                value += qTable[i,j,0] - qTable[i,j,1];
+            }
+            value /= 10;
+            Debug.Log(i);
+            Debug.Log(value);
+        }
+    }
 }
 
 public class ValueShowingTable: QTable
@@ -45,20 +68,20 @@ public class ValueShowingTable: QTable
     protected override void CreateTable()
     {
         // Value, showing card, action
-        qTable = new float[22,13,2];
+        qTable = new float[22,10,2];
     }
 
     public override float GetEntry(List<Card> cards, Card showing, int action)
     {
         int valueIndex = GetValue(cards);
-        int showingIndex = showing.Value();
+        int showingIndex = showing.Value() - 2;
         return qTable[valueIndex,showingIndex,action];
     }
 
     public override void SetEntry(List<Card> cards, Card showing, int action, float qValue)
     {
         int valueIndex = GetValue(cards);
-        int showingIndex = showing.Value();
+        int showingIndex = showing.Value() - 2;
         qTable[valueIndex,showingIndex,action] = qValue;
     }
 }

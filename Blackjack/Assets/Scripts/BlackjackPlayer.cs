@@ -4,27 +4,39 @@ using UnityEngine;
 
 public abstract class BlackjackPlayer : MonoBehaviour
 {
-    protected bool isLearner;
+    public bool isLearner{get; protected set;}
     protected List<bool> actionHistory;
-    protected List<int> valueHistory;
+    protected List<float> rewardHistory;
+    protected Card opponentShowing;
+    protected List<List<Card>> stateHistory;
+    protected List<List<Card>> nextStateHistory;
 
-    protected void Start()
+    protected virtual void Start()
     {
         ResetHistory();
     }
 
     public abstract bool Hit(List<Card> cards, Card showing);
 
-    public void AddToHistory(bool action, int value)
+    public void AddToHistory(bool action, float reward, List<Card> state, List<Card> newState)
     {
         actionHistory.Add(action);
-        valueHistory.Add(value);
+        stateHistory.Add(state);
+        nextStateHistory.Add(newState);
+        rewardHistory.Add(reward);
     }
 
     public void ResetHistory()
     {
         actionHistory = new List<bool>();
-        valueHistory = new List<int>();
+        stateHistory = new List<List<Card>>();
+        nextStateHistory = new List<List<Card>>();
+        rewardHistory = new List<float>();
+    }
+
+    public void ModifyLastReward(float reward)
+    {
+        rewardHistory[rewardHistory.Count - 1] = reward;
     }
 
     public int GetValue(List<Card> cards)
@@ -45,5 +57,21 @@ public abstract class BlackjackPlayer : MonoBehaviour
             numberOfAces --;
         }
         return value;
+    }
+
+    public void SetShowing(Card opponentCard)
+    {
+        opponentShowing = opponentCard;
+    }
+
+    public virtual void Train()
+    {
+        Debug.LogWarning("BlackjackPlayer.Train called without method being implemented");
+        return;
+    }
+
+    public virtual void PrintTable()
+    {
+        
     }
 }
