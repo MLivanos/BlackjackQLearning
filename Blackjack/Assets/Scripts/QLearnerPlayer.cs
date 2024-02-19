@@ -14,7 +14,7 @@ public class QLearnerPlayer : BlackjackPlayer
 
     public QLearnerPlayer()
     {
-        qTable = new ValueShowingTable();
+        qTable = new ValueQTable();
         isLearner = true;
     }
 
@@ -59,11 +59,5 @@ public class QLearnerPlayer : BlackjackPlayer
             List<Card> nextState = nextStateHistory[i];
             TrainEntry(state, nextState, opponentShowing, action, reward);
         }
-    }
-
-    public override void PrintTable()
-    {
-        qTable.PrintTable();
-        Debug.Log("====");
     }
 }

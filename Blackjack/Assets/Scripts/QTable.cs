@@ -15,7 +15,6 @@ public abstract class QTable
     public QTable()
     {
         CreateTable();
-        PrintTable();
     }
     public bool GetAction(List<Card> cards, Card showing)
     {
@@ -45,21 +44,6 @@ public abstract class QTable
             numberOfAces --;
         }
         return value;
-    }
-
-    public void PrintTable()
-    {
-        for(int i=0; i<22; i++)
-        {
-            float value = 0.0f;
-            for(int j=0; j<10; j++)
-            {
-                value += qTable[i,j,0] - qTable[i,j,1];
-            }
-            value /= 10;
-            Debug.Log(i);
-            Debug.Log(value);
-        }
     }
 }
 

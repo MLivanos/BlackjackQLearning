@@ -69,9 +69,4 @@ public abstract class BlackjackPlayer : MonoBehaviour
         Debug.LogWarning("BlackjackPlayer.Train called without method being implemented");
         return;
     }
-
-    public virtual void PrintTable()
-    {
-        
-    }
 }

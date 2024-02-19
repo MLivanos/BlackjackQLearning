@@ -13,17 +13,6 @@ public class BlackjackGame : MonoBehaviour
         deck = new Deck();
         players[0].ResetHistory();
         players[1].ResetHistory();
-        for(int i=0; i<200000; i++)
-        {
-            Play();
-            if (i%50000 == 0 && i>0)
-            {
-                Debug.Log(nWins/1000);
-                nWins = 0.0f;
-                players[0].PrintTable();
-            }
-        }
-
     }
 
     private void Update()
@@ -79,30 +68,18 @@ public class BlackjackGame : MonoBehaviour
         if(p1Bust && !p2Bust)
         {
             outcome = 2;
-            //Debug.Log("P1 Busts, P2 Wins");
         }
         else if(p2Bust && !p1Bust)
         {
             outcome = 1;
-            //Debug.Log("P2 Busts, P1 Wins");
-        }
-        else if(p1Bust && p2Bust)
-        {
-            //Debug.Log("Both players bust! Push");
         }
         else if(p1Value > p2Value)
         {
             outcome = 1;
-            //Debug.Log("P1 Wins");
         }
         else if(p1Value < p2Value)
         {
             outcome = 2;
-            //Debug.Log("P2 Wins");
-        }
-        else
-        {
-            //Debug.Log("Push");
         }
         return outcome;
     }
@@ -124,16 +101,6 @@ public class BlackjackGame : MonoBehaviour
         {
             players[playerIndex].AddToHistory(false, 0.0f, cards, null);
         }
-        //PrintAllCards(cards);
         return currentValue;
-    }
-
-    private void PrintAllCards(List<Card> cards)
-    {
-        Debug.Log("=======");
-        foreach(Card card in cards)
-        {
-            Debug.Log(card.value);
-        }
     }
 }
