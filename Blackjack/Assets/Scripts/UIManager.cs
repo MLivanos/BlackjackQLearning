@@ -30,6 +30,23 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ToggleEpsilon(bool isActive)
+    {
+        epsilonSelection.SetActive(isActive);
+        epsilonDecaySelection.SetActive(isActive);
+        minEpsilonSelection.SetActive(isActive);
+        if (!isActive)
+        {
+            game.SetEpsilon("0.0");
+            game.SetMinEpsilon("0.0");
+        }
+        else
+        {
+            game.SetEpsilon(GetValueFromText(epsilonSelection));
+            game.SetMinEpsilon(GetValueFromText(minEpsilonSelection));
+        }
+    }
+
     private void SimpleUpdate()
     {
         alphaSelection.SetActive(false);
@@ -46,7 +63,7 @@ public class UIManager : MonoBehaviour
         game.SetAlpha("1.0");
     }
 
-     private void FullUpdate()
+    private void FullUpdate()
     {
         alphaSelection.SetActive(true);
         gammaSelection.SetActive(true);
