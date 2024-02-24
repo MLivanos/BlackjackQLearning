@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject epsilonSelection;
     [SerializeField] GameObject epsilonDecaySelection;
     [SerializeField] GameObject minEpsilonSelection;
+    [SerializeField] GameObject valueShowingStateLabels;
+    [SerializeField] GameObject valueValueStateLabels;
 
     public void SetEquation(int equation)
     {
@@ -24,6 +26,24 @@ public class UIManager : MonoBehaviour
                 break;
             case 2:
                 FullUpdate();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetStateSpace(int state)
+    {
+        switch (state)
+        {
+            case 0:
+                SetValueValueStateSpace();
+                break;
+            case 1:
+                SetValueShowingStateSpace();
+                break;
+            case 2:
+                SetValueStateSpace();
                 break;
             default:
                 break;
@@ -69,6 +89,24 @@ public class UIManager : MonoBehaviour
         gammaSelection.SetActive(true);
         game.SetGamma(GetValueFromText(gammaSelection));
         game.SetAlpha(GetValueFromText(alphaSelection));
+    }
+
+    private void SetValueShowingStateSpace()
+    {
+        valueShowingStateLabels.SetActive(true);
+        valueValueStateLabels.SetActive(false);
+    }
+
+    private void SetValueValueStateSpace()
+    {
+        valueShowingStateLabels.SetActive(false);
+        valueValueStateLabels.SetActive(true);
+    }
+
+    private void SetValueStateSpace()
+    {
+        valueShowingStateLabels.SetActive(false);
+        valueValueStateLabels.SetActive(false);
     }
 
     private string GetValueFromText(GameObject selection)
