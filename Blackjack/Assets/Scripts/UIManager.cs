@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject cellPrefab;
     [SerializeField] GameObject QTableCanvas;
     GameObject currentShowing;
-    GameObject[,] QTableMatrix = new GameObject[0,0];
+    QTableCell[,] QTableMatrix = new QTableCell[0,0];
 
     private void Start()
     {
@@ -84,13 +84,13 @@ public class UIManager : MonoBehaviour
         ClearQTableCells();
         int numberOfValues = 20;
         int numberOfOpponentValues = currentShowing ? currentShowing.transform.childCount : 1;
-        QTableMatrix = new GameObject[numberOfValues,numberOfOpponentValues];
+        QTableMatrix = new QTableCell[numberOfValues,numberOfOpponentValues];
         for(int i=0; i<numberOfValues; i++)
         {
             for(int j=0; j<numberOfOpponentValues; j++)
             {
                 GameObject newCell = Instantiate(cellPrefab, QTableCanvas.transform);
-                QTableMatrix[i,j] = newCell;
+                QTableMatrix[i,j] = newCell.GetComponent<QTableCell>();
                 newCell.transform.Translate(Vector3.right * j * 20 + Vector3.down * i * 15);
             }
         }
@@ -102,9 +102,19 @@ public class UIManager : MonoBehaviour
         {
             for(int j=0; j<QTableMatrix.GetLength(1); j++)
             {
-                Destroy(QTableMatrix[i,j]);
+                Destroy(QTableMatrix[i,j].gameObject);
             }
         }
+    }
+
+    public void InstantiateQLearner()
+    {
+        SimpleUpdate();
+    }
+
+    public void UpdateCell(int valueIndex, int opponentIndex, float value)
+    {
+        QTableMatrix[valueIndex,opponentIndex].ChangeColor(value);
     }
 
     private void SimpleUpdate()
@@ -155,5 +165,10 @@ public class UIManager : MonoBehaviour
     private string GetValueFromText(GameObject selection)
     {
         return selection.GetComponentInChildren<TMP_InputField>().text;
+    }
+
+    public void Run()
+    {
+        game.Run();
     }
 }

@@ -856,7 +856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &109649704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5539,7 +5539,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 536807577}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2109616063}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: Run
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &536807577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9081,6 +9093,7 @@ MonoBehaviour:
   - {fileID: 7730268496130103380, guid: f73387635e145425f8f69799044f59ab, type: 3}
   - {fileID: 8556220737280924798, guid: 8bb29b0851fdf4cf9b3b510efb943be2, type: 3}
   player2: {fileID: 7730268496130103380, guid: f73387635e145425f8f69799044f59ab, type: 3}
+  uiManager: {fileID: 2109616063}
 --- !u!4 &871023978
 Transform:
   m_ObjectHideFlags: 0
@@ -13616,7 +13629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1460293676
 RectTransform:
   m_ObjectHideFlags: 0

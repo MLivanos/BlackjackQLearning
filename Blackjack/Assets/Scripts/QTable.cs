@@ -26,7 +26,7 @@ public abstract class QTable
         return Mathf.Max(GetEntry(cards, showing, 0), GetEntry(cards, showing, 1));
     }
 
-    protected int GetValue(List<Card> cards)
+    public int GetValue(List<Card> cards)
     {
         int numberOfAces = 0;
         int value = 0;
@@ -44,6 +44,11 @@ public abstract class QTable
             numberOfAces --;
         }
         return value;
+    }
+
+    public virtual int GetShowingIndex(Card showing)
+    {
+        return 0;
     }
 }
 
@@ -68,6 +73,11 @@ public class ValueShowingTable: QTable
         int showingIndex = showing.Value() - 2;
         qTable[valueIndex,showingIndex,action] = qValue;
     }
+
+    public override int GetShowingIndex(Card showing)
+    {
+        return showing.Value() - 2;;
+    }
 }
 
 public class ValueCardShowingTable: QTable
@@ -78,7 +88,7 @@ public class ValueCardShowingTable: QTable
         qTable = new float[22,13,2];
     }
 
-    private int GetShowingIndex(Card showing)
+    public override int GetShowingIndex(Card showing)
     {
         int showingIndex;
         switch (showing.value)

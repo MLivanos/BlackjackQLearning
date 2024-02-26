@@ -7,15 +7,17 @@ public class BlackjackGame : MonoBehaviour
     BlackjackPlayer[] players = new BlackjackPlayer[2];
     [SerializeField] BlackjackPlayer[] opponentPrefabs;
     [SerializeField] BlackjackPlayer player2;
+    [SerializeField] UIManager uiManager;
     QLearnerPlayer player1;
     Deck deck;
     float nWins = 0.0f;
-    int epochs = 0;
+    int epochs = 100;
 
     private void Start()
     {
         gameObject.AddComponent<QLearnerPlayer>();
         player1 = gameObject.GetComponent<QLearnerPlayer>();
+        uiManager.InstantiateQLearner();
         deck = new Deck();
         player1.ResetHistory();
         player2.ResetHistory();

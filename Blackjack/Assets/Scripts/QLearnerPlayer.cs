@@ -5,6 +5,7 @@ using UnityEngine;
 public class QLearnerPlayer : BlackjackPlayer
 {
     private QTable qTable;
+    private UIManager uiManager;
     [SerializeField] private float alpha;
     [SerializeField] private float gamma;
     [SerializeField] private float epsilon;
@@ -17,7 +18,7 @@ public class QLearnerPlayer : BlackjackPlayer
         switch (stateSpaceType)
         {
             case 0:
-                qTable = new ValueShowingTable();;
+                qTable = new ValueShowingTable();
                 break;
             case 1:
                 qTable = new ValueCardShowingTable();
@@ -33,7 +34,9 @@ public class QLearnerPlayer : BlackjackPlayer
 
     protected override void Start()
     {
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         base.Start();
+        SetStateSpace();
     }
     
     public override bool Hit(List<Card> cards, Card showing)
@@ -58,7 +61,13 @@ public class QLearnerPlayer : BlackjackPlayer
             argmaxQ = qTable.GetBestQValue(newHand, showing);
         }
         float newQValue = (1-alpha) * oldQValue + alpha * (reward + gamma * argmaxQ);
+        Debug.Log(alpha);
+        Debug.Log(reward);
+        Debug.Log(gamma);
+        Debug.Log(newQValue);
+        Debug.Log("======");
         qTable.SetEntry(cards, showing, action, newQValue);
+        uiManager.UpdateCell(qTable.GetValue(cards) - 2, qTable.GetShowingIndex(showing), newQValue);
     }
 
     public override void Train()
