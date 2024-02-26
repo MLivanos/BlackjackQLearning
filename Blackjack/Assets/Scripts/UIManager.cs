@@ -13,6 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject minEpsilonSelection;
     [SerializeField] GameObject valueShowingStateLabels;
     [SerializeField] GameObject valueValueStateLabels;
+    [SerializeField] GameObject cellPrefab;
+    [SerializeField] GameObject QTableCanvas;
+    GameObject currentShowing;
+    GameObject[,] QTableMatrix = new GameObject[0,0];
+
+    private void Start()
+    {
+        currentShowing = valueValueStateLabels;
+        InstantiateQTableCells();
+    }
 
     public void SetEquation(int equation)
     {
@@ -48,6 +58,8 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+        game.SetStateSpace(state);
+        InstantiateQTableCells();
     }
 
     public void ToggleEpsilon(bool isActive)
@@ -64,6 +76,34 @@ public class UIManager : MonoBehaviour
         {
             game.SetEpsilon(GetValueFromText(epsilonSelection));
             game.SetMinEpsilon(GetValueFromText(minEpsilonSelection));
+        }
+    }
+
+    public void InstantiateQTableCells()
+    {
+        ClearQTableCells();
+        int numberOfValues = 20;
+        int numberOfOpponentValues = currentShowing ? currentShowing.transform.childCount : 1;
+        QTableMatrix = new GameObject[numberOfValues,numberOfOpponentValues];
+        for(int i=0; i<numberOfValues; i++)
+        {
+            for(int j=0; j<numberOfOpponentValues; j++)
+            {
+                GameObject newCell = Instantiate(cellPrefab, QTableCanvas.transform);
+                QTableMatrix[i,j] = newCell;
+                newCell.transform.Translate(Vector3.right * j * 20 + Vector3.down * i * 15);
+            }
+        }
+    }
+
+    private void ClearQTableCells()
+    {
+        for(int i=0; i<QTableMatrix.GetLength(0); i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                Destroy(QTableMatrix[i,j]);
+            }
         }
     }
 
@@ -95,18 +135,21 @@ public class UIManager : MonoBehaviour
     {
         valueShowingStateLabels.SetActive(true);
         valueValueStateLabels.SetActive(false);
+        currentShowing = valueShowingStateLabels;
     }
 
     private void SetValueValueStateSpace()
     {
         valueShowingStateLabels.SetActive(false);
         valueValueStateLabels.SetActive(true);
+        currentShowing = valueValueStateLabels;
     }
 
     private void SetValueStateSpace()
     {
         valueShowingStateLabels.SetActive(false);
         valueValueStateLabels.SetActive(false);
+        currentShowing = null;
     }
 
     private string GetValueFromText(GameObject selection)

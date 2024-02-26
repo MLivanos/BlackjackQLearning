@@ -12,9 +12,22 @@ public class QLearnerPlayer : BlackjackPlayer
     [SerializeField] private float epsilonDecay;
     private bool isTraining = true;
 
-    public QLearnerPlayer()
+    public void SetStateSpace(int stateSpaceType=0)
     {
-        qTable = new ValueQTable();
+        switch (stateSpaceType)
+        {
+            case 0:
+                qTable = new ValueShowingTable();;
+                break;
+            case 1:
+                qTable = new ValueCardShowingTable();
+                break;
+            case 2:
+                qTable = new ValueQTable();
+                break;
+            default:
+                break;
+        }
         isLearner = true;
     }
 

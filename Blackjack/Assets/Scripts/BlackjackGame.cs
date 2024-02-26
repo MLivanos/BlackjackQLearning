@@ -164,4 +164,9 @@ public class BlackjackGame : MonoBehaviour
     {
 
     }
+
+    public void SetStateSpace(int qTableIndex)
+    {
+        player1.SetStateSpace(qTableIndex);
+    }
 }
