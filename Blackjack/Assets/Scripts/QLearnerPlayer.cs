@@ -61,13 +61,8 @@ public class QLearnerPlayer : BlackjackPlayer
             argmaxQ = qTable.GetBestQValue(newHand, showing);
         }
         float newQValue = (1-alpha) * oldQValue + alpha * (reward + gamma * argmaxQ);
-        Debug.Log(alpha);
-        Debug.Log(reward);
-        Debug.Log(gamma);
-        Debug.Log(newQValue);
-        Debug.Log("======");
         qTable.SetEntry(cards, showing, action, newQValue);
-        uiManager.UpdateCell(qTable.GetValue(cards) - 2, qTable.GetShowingIndex(showing), newQValue);
+        uiManager.UpdateCell(qTable.GetValue(cards) - 2, qTable.GetShowingIndex(showing), newQValue, action == 0);
     }
 
     public override void Train()

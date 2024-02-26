@@ -4237,7 +4237,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 871023977}
         m_TargetAssemblyTypeName: BlackjackGame, Assembly-CSharp
-        m_MethodName: SetGamma
+        m_MethodName: SetEpochs
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

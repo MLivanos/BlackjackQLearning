@@ -112,9 +112,9 @@ public class UIManager : MonoBehaviour
         SimpleUpdate();
     }
 
-    public void UpdateCell(int valueIndex, int opponentIndex, float value)
+    public void UpdateCell(int valueIndex, int opponentIndex, float value, bool action)
     {
-        QTableMatrix[valueIndex,opponentIndex].ChangeColor(value);
+        QTableMatrix[valueIndex,opponentIndex].ChangeColor(value, action);
     }
 
     private void SimpleUpdate()

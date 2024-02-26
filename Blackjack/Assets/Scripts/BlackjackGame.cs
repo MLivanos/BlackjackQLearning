@@ -11,7 +11,7 @@ public class BlackjackGame : MonoBehaviour
     QLearnerPlayer player1;
     Deck deck;
     float nWins = 0.0f;
-    int epochs = 100;
+    int epochs = 100000;
 
     private void Start()
     {
