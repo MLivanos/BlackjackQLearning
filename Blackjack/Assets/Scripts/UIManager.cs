@@ -209,6 +209,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ClearQTable()
+    {
+        game.ClearQTable();
+        for(int i=0; i<QTableMatrix.GetLength(0); i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                QTableMatrix[i,j].Clear();
+            }
+        }
+    }
+
     private void SimpleUpdate()
     {
         alphaSelection.SetActive(false);

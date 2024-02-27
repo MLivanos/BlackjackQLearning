@@ -9,9 +9,9 @@ public class QTableCell : MonoBehaviour
     [SerializeField] private Color32 neutralColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     [SerializeField] private Color32 positiveColor = new Color(0.0f, 0.0f, 1.0f, 1.0f);
     private Image panelImage;
-    private float[] hitValueHistory = new float[100];
-    private float[] standValueHistory = new float[100];
-    private float[] differenceValueHistory = new float[100];
+    private float[] hitValueHistory;
+    private float[] standValueHistory;
+    private float[] differenceValueHistory;
     int historyIndex;
     private float hitValue;
     private float standValue;
@@ -19,7 +19,22 @@ public class QTableCell : MonoBehaviour
 
     private void Awake()
     {
+        InitializeHistory();
         panelImage = GetComponent<Image>();
+    }
+
+    private void InitializeHistory()
+    {
+        hitValueHistory = new float[100];
+        standValueHistory = new float[100];
+        differenceValueHistory = new float[100];
+        historyIndex = 0;
+    }
+
+    public void Clear()
+    {
+        InitializeHistory();
+        panelImage.color = neutralColor;
     }
 
     public void ChangeColor(float value, bool isHit)

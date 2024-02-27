@@ -160,7 +160,6 @@ public class BlackjackGame : MonoBehaviour
 
     public void Run()
     {
-        player1.ClearTable();
         deck = new Deck();
         for(int i=0; i<epochs+1; i++)
         {
@@ -185,5 +184,10 @@ public class BlackjackGame : MonoBehaviour
     public void SeedQTable(float initialQValue)
     {
         player1.SeedQTable(initialQValue);
+    }
+
+    public void ClearQTable()
+    {
+        player1.ClearTable();
     }
 }
