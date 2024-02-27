@@ -6025,8 +6025,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
-  m_fontSizeBase: 10
+  m_fontSize: 11
+  m_fontSizeBase: 11
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -20302,7 +20302,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 220, y: -24.861109}
-  m_SizeDelta: {x: 200, y: 20}
+  m_SizeDelta: {x: 230, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1884258682
 MonoBehaviour:
@@ -20356,9 +20356,9 @@ MonoBehaviour:
     m_Options:
     - m_Text: Q(s,a) = r + max(Q(s')
       m_Image: {fileID: 0}
-    - m_Text: "Q(s,a) = (1-\u03B1)Q(s,a)+(r + max(Q(s'))"
+    - m_Text: "Q(s,a) = (1-\u03B1)Q(s,a)+\u03B1(r + max(Q(s'))"
       m_Image: {fileID: 0}
-    - m_Text: "Q(s,a) = (1-\u03B1)Q(s,a)+(r + \u03B3max(Q(s'))"
+    - m_Text: "Q(s,a) = (1-\u03B1)Q(s,a)+\u03B1(r + \u03B3max(Q(s'))"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
