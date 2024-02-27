@@ -42,6 +42,8 @@ public class QTableCell : MonoBehaviour
 
     private Color32 GetColorFromValue(float value)
     {
+        value = Mathf.Clamp(value, -1.0f, 1.0f);
+        value = (value + 1.0f) / 2;
         Color32 lowColor = value < 0.5 ? negativeColor : neutralColor;
         Color32 highColor = value < 0.5 ? neutralColor : positiveColor;
         float lerpValue = value < 0.5 ? value*2 : (value - 0.5f)*2;
@@ -60,7 +62,5 @@ public class QTableCell : MonoBehaviour
             standValue = value;
         }
         differenceValue = (hitValue - standValue)/2;
-        Mathf.Clamp(differenceValue, -1.0f, 1.0f);
-        differenceValue = (differenceValue + 1.0f) / 2;
     }
 }
