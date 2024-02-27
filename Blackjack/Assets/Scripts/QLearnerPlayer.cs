@@ -5,6 +5,8 @@ using UnityEngine;
 public class QLearnerPlayer : BlackjackPlayer
 {
     private QTable qTable;
+    private UIManager uiManager;
+    private int stateSpaceIndex;
     [SerializeField] private float alpha;
     [SerializeField] private float gamma;
     [SerializeField] private float epsilon;
@@ -12,15 +14,31 @@ public class QLearnerPlayer : BlackjackPlayer
     [SerializeField] private float epsilonDecay;
     private bool isTraining = true;
 
-    public QLearnerPlayer()
+    public void SetStateSpace(int stateSpaceType=0)
     {
-        qTable = new ValueQTable();
+        stateSpaceIndex = stateSpaceType;
+        switch (stateSpaceType)
+        {
+            case 0:
+                qTable = new ValueShowingTable();
+                break;
+            case 1:
+                qTable = new ValueCardShowingTable();
+                break;
+            case 2:
+                qTable = new ValueQTable();
+                break;
+            default:
+                break;
+        }
         isLearner = true;
     }
 
     protected override void Start()
     {
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         base.Start();
+        SetStateSpace();
     }
     
     public override bool Hit(List<Card> cards, Card showing)
@@ -46,6 +64,7 @@ public class QLearnerPlayer : BlackjackPlayer
         }
         float newQValue = (1-alpha) * oldQValue + alpha * (reward + gamma * argmaxQ);
         qTable.SetEntry(cards, showing, action, newQValue);
+        uiManager.UpdateCell(qTable.GetValue(cards) - 2, qTable.GetShowingIndex(showing), newQValue, action == 0);
     }
 
     public override void Train()
@@ -59,5 +78,40 @@ public class QLearnerPlayer : BlackjackPlayer
             List<Card> nextState = nextStateHistory[i];
             TrainEntry(state, nextState, opponentShowing, action, reward);
         }
+    }
+
+    public void SetGamma(float gamma_)
+    {
+        gamma = gamma_;
+    }
+
+    public void SetAlpha(float alpha_)
+    {
+        alpha = alpha_;
+    }
+
+    public void SetEpsilon(float epsilon_)
+    {
+        epsilon = epsilon_;
+    }
+
+    public void SetEpsilonDecay(float epsilonDecay_)
+    {
+        epsilonDecay = epsilonDecay_;
+    }
+
+    public void SetMinEpsilon(float minEpsilon_)
+    {
+        minEpsilon = minEpsilon_;
+    }
+
+    public void ClearTable()
+    {
+        SetStateSpace(stateSpaceIndex);
+    }
+
+    public void SeedQTable(float initialQValue)
+    {
+        qTable.Seed(initialQValue);
     }
 }
