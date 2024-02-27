@@ -15,10 +15,7 @@ public class BlackjackGame : MonoBehaviour
 
     private void Start()
     {
-        gameObject.AddComponent<QLearnerPlayer>();
-        player1 = gameObject.GetComponent<QLearnerPlayer>();
-        uiManager.InstantiateQLearner();
-        deck = new Deck();
+        CreateQLearner();
         player1.ResetHistory();
         player2.ResetHistory();
         players[0] = player1;
@@ -60,6 +57,13 @@ public class BlackjackGame : MonoBehaviour
         playerHand.Add(deck.Draw());
         playerHand.Add(deck.Draw());
         return playerHand;
+    }
+
+    private void CreateQLearner()
+    {
+        gameObject.AddComponent<QLearnerPlayer>();
+        player1 = gameObject.GetComponent<QLearnerPlayer>();
+        uiManager.InstantiateQLearner();
     }
 
     private void TrainPlayer(BlackjackPlayer player)
@@ -156,6 +160,8 @@ public class BlackjackGame : MonoBehaviour
 
     public void Run()
     {
+        player1.ClearTable();
+        deck = new Deck();
         for(int i=0; i<epochs; i++)
         {
             Play();

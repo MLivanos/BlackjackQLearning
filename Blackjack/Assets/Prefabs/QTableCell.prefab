@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7874117542991351497}
   - component: {fileID: 3903239674438285331}
   - component: {fileID: 7089594606624250808}
-  - component: {fileID: 8009336519252203190}
   m_Layer: 5
   m_Name: QTableCell
   m_TagString: Untagged
@@ -93,24 +92,9 @@ MonoBehaviour:
   negativeColor:
     serializedVersion: 2
     rgba: 4278232831
-  positiveColor:
+  neutralColor:
     serializedVersion: 2
-    rgba: 4294901760
---- !u!114 &8009336519252203190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3465509352728687196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8582087a27c6f4e03973875a07edee65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  negativeColor:
-    serializedVersion: 2
-    rgba: 4278232831
+    rgba: 4294967295
   positiveColor:
     serializedVersion: 2
     rgba: 4294901760

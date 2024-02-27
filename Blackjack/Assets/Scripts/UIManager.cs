@@ -117,6 +117,60 @@ public class UIManager : MonoBehaviour
         QTableMatrix[valueIndex,opponentIndex].ChangeColor(value, action);
     }
 
+    public void ChangeTableView(int viewType)
+    {
+        switch (viewType)
+        {
+            case 0:
+                ChangeTableViewDifference();
+                break;
+            case 1:
+                ChangeTableViewAction(true);
+                break;
+            case 2:
+                ChangeTableViewAction(false);
+                break;
+            case 3:
+                ChangeTableViewPolicy();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ChangeTableViewDifference()
+    {
+        for(int i=0; i<QTableMatrix.GetLength(0); i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                QTableMatrix[i,j].ChangeColorDifference();
+            }
+        }
+    }
+
+    public void ChangeTableViewAction(bool isHit)
+    {
+        for(int i=0; i<QTableMatrix.GetLength(0); i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                QTableMatrix[i,j].ChangeColorAction(isHit);
+            }
+        }
+    }
+
+    public void ChangeTableViewPolicy()
+    {
+        for(int i=0; i<QTableMatrix.GetLength(0); i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                QTableMatrix[i,j].ChangeColorPolicy();
+            }
+        }
+    }
+
     private void SimpleUpdate()
     {
         alphaSelection.SetActive(false);

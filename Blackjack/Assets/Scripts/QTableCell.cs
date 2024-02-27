@@ -20,10 +20,36 @@ public class QTableCell : MonoBehaviour
 
     public void ChangeColor(float value, bool isHit)
     {
-        panelImage.color = GetColorFromValue(value, isHit);
+        UpdateQValues(value, isHit);
+        panelImage.color = GetColorFromValue(differenceValue);
     }
 
-    private Color32 GetColorFromValue(float value, bool isHit)
+    public void ChangeColorDifference()
+    {
+        panelImage.color = GetColorFromValue(differenceValue);
+    }
+
+    public void ChangeColorAction(bool isHit)
+    {
+        float value = isHit ? hitValue : standValue;
+        panelImage.color = GetColorFromValue(value);
+    }
+
+    public void ChangeColorPolicy()
+    {
+        panelImage.color = hitValue >= standValue ? positiveColor : negativeColor;
+    }
+
+    private Color32 GetColorFromValue(float value)
+    {
+        Color32 lowColor = value < 0.5 ? negativeColor : neutralColor;
+        Color32 highColor = value < 0.5 ? neutralColor : positiveColor;
+        float lerpValue = value < 0.5 ? value*2 : (value - 0.5f)*2;
+        Color32 valueColor = Color.Lerp(lowColor, highColor, lerpValue);
+        return valueColor;
+    }
+
+    public void UpdateQValues(float value, bool isHit)
     {
         if(isHit)
         {
@@ -36,11 +62,5 @@ public class QTableCell : MonoBehaviour
         differenceValue = (hitValue - standValue)/2;
         Mathf.Clamp(differenceValue, -1.0f, 1.0f);
         differenceValue = (differenceValue + 1.0f) / 2;
-        Color32 lowColor = differenceValue < 0.5 ? negativeColor : neutralColor;
-        Color32 highColor = differenceValue < 0.5 ? neutralColor : positiveColor;
-        differenceValue = differenceValue < 0.5 ? differenceValue*2 : (differenceValue - 0.5f)*2;
-        //Debug.Log(differenceValue);
-        Color32 valueColor = Color.Lerp(lowColor, highColor, differenceValue);
-        return valueColor;
     }
 }

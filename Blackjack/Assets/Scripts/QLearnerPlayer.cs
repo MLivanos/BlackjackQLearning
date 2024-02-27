@@ -6,6 +6,7 @@ public class QLearnerPlayer : BlackjackPlayer
 {
     private QTable qTable;
     private UIManager uiManager;
+    private int stateSpaceIndex;
     [SerializeField] private float alpha;
     [SerializeField] private float gamma;
     [SerializeField] private float epsilon;
@@ -15,6 +16,7 @@ public class QLearnerPlayer : BlackjackPlayer
 
     public void SetStateSpace(int stateSpaceType=0)
     {
+        stateSpaceIndex = stateSpaceType;
         switch (stateSpaceType)
         {
             case 0:
@@ -101,5 +103,10 @@ public class QLearnerPlayer : BlackjackPlayer
     public void SetMinEpsilon(float minEpsilon_)
     {
         minEpsilon = minEpsilon_;
+    }
+
+    public void ClearTable()
+    {
+        SetStateSpace(stateSpaceIndex);
     }
 }
