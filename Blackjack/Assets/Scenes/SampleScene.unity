@@ -6287,18 +6287,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536807574}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.4999998, y: 10, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1147139110}
-  m_Father: {fileID: 585494241}
-  m_RootOrder: 14
+  m_Father: {fileID: 1454248035}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 360.1896, y: -184.83414}
+  m_AnchoredPosition: {x: 399.65405, y: 14.843674}
   m_SizeDelta: {x: 50, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &536807576
@@ -7339,7 +7339,6 @@ RectTransform:
   - {fileID: 185649127}
   - {fileID: 722312303}
   - {fileID: 682611893}
-  - {fileID: 536807575}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15885,6 +15884,7 @@ RectTransform:
   m_LocalScale: {x: 0.4, y: 0.1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 536807575}
   - {fileID: 1458502402}
   m_Father: {fileID: 585494241}
   m_RootOrder: 3
@@ -15943,7 +15943,7 @@ GameObject:
   - component: {fileID: 1458502402}
   - component: {fileID: 1458502403}
   m_Layer: 5
-  m_Name: Slider (1)
+  m_Name: IterationSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15965,7 +15965,7 @@ RectTransform:
   - {fileID: 497539048}
   - {fileID: 459012136}
   m_Father: {fileID: 1454248035}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -16023,9 +16023,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 235187082}
-        m_TargetAssemblyTypeName: DisplayValue, Assembly-CSharp
-        m_MethodName: SetValue
+      - m_Target: {fileID: 2109616063}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetIterationIndex
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

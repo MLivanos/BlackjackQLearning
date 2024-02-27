@@ -162,8 +162,12 @@ public class BlackjackGame : MonoBehaviour
     {
         player1.ClearTable();
         deck = new Deck();
-        for(int i=0; i<epochs; i++)
+        for(int i=0; i<epochs+1; i++)
         {
+            if (i%((int)(epochs/100)) == 0)
+            {
+                uiManager.StoreQTable();
+            }
             Play();
         }
     }

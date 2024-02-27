@@ -9,6 +9,10 @@ public class QTableCell : MonoBehaviour
     [SerializeField] private Color32 neutralColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     [SerializeField] private Color32 positiveColor = new Color(0.0f, 0.0f, 1.0f, 1.0f);
     private Image panelImage;
+    private float[] hitValueHistory = new float[100];
+    private float[] standValueHistory = new float[100];
+    private float[] differenceValueHistory = new float[100];
+    int historyIndex;
     private float hitValue;
     private float standValue;
     private float differenceValue;
@@ -24,20 +28,20 @@ public class QTableCell : MonoBehaviour
         panelImage.color = GetColorFromValue(differenceValue);
     }
 
-    public void ChangeColorDifference()
+    public void ChangeColorDifference(int index=99)
     {
-        panelImage.color = GetColorFromValue(differenceValue);
+        panelImage.color = GetColorFromValue(differenceValueHistory[index]);
     }
 
-    public void ChangeColorAction(bool isHit)
+    public void ChangeColorAction(bool isHit, int index=99)
     {
-        float value = isHit ? hitValue : standValue;
+        float value = isHit ? hitValueHistory[index] : standValueHistory[index];
         panelImage.color = GetColorFromValue(value);
     }
 
-    public void ChangeColorPolicy()
+    public void ChangeColorPolicy(int index=99)
     {
-        panelImage.color = hitValue >= standValue ? positiveColor : negativeColor;
+        panelImage.color = hitValueHistory[index] >= standValue ? positiveColor : negativeColor;
     }
 
     private Color32 GetColorFromValue(float value)
@@ -62,5 +66,14 @@ public class QTableCell : MonoBehaviour
             standValue = value;
         }
         differenceValue = (hitValue - standValue)/2;
+    }
+
+    public void AddToHistory()
+    {
+        int index = Mathf.Min(historyIndex, 99);
+        hitValueHistory[index] = hitValue;
+        standValueHistory[index] = standValue;
+        differenceValueHistory[index] = differenceValue;
+        historyIndex++;
     }
 }

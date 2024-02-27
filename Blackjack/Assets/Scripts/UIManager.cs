@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -17,6 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject QTableCanvas;
     GameObject currentShowing;
     QTableCell[,] QTableMatrix = new QTableCell[0,0];
+    private int iterationIndex = 99;
+    private int viewIndex;
 
     private void Start()
     {
@@ -119,7 +122,8 @@ public class UIManager : MonoBehaviour
 
     public void ChangeTableView(int viewType)
     {
-        switch (viewType)
+        viewIndex = viewType;
+        switch (viewIndex)
         {
             case 0:
                 ChangeTableViewDifference();
@@ -144,7 +148,7 @@ public class UIManager : MonoBehaviour
         {
             for(int j=0; j<QTableMatrix.GetLength(1); j++)
             {
-                QTableMatrix[i,j].ChangeColorDifference();
+                QTableMatrix[i,j].ChangeColorDifference(iterationIndex);
             }
         }
     }
@@ -155,7 +159,7 @@ public class UIManager : MonoBehaviour
         {
             for(int j=0; j<QTableMatrix.GetLength(1); j++)
             {
-                QTableMatrix[i,j].ChangeColorAction(isHit);
+                QTableMatrix[i,j].ChangeColorAction(isHit,iterationIndex);
             }
         }
     }
@@ -166,8 +170,29 @@ public class UIManager : MonoBehaviour
         {
             for(int j=0; j<QTableMatrix.GetLength(1); j++)
             {
-                QTableMatrix[i,j].ChangeColorPolicy();
+                QTableMatrix[i,j].ChangeColorPolicy(iterationIndex);
             }
+        }
+    }
+
+    public void StoreQTable()
+    {
+        for(int i=0; i<QTableMatrix.GetLength(0); i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                QTableMatrix[i,j].AddToHistory();
+            }
+        }
+    }
+
+    public void SetIterationIndex(float sliderValue)
+    {
+        int oldIterationIndex = iterationIndex;
+        iterationIndex = (int)(sliderValue * 99);
+        if (iterationIndex != oldIterationIndex)
+        {
+            ChangeTableView(viewIndex);
         }
     }
 
