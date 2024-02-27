@@ -109,4 +109,9 @@ public class QLearnerPlayer : BlackjackPlayer
     {
         SetStateSpace(stateSpaceIndex);
     }
+
+    public void SeedQTable(float initialQValue)
+    {
+        qTable.Seed(initialQValue);
+    }
 }

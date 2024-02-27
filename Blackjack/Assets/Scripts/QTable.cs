@@ -50,6 +50,18 @@ public abstract class QTable
     {
         return 0;
     }
+
+    public void Seed(float initialQValue)
+    {
+        for(int i=0; i<10; i++)
+        {
+            for(int j=0; j<qTable.GetLength(1); j++)
+            {
+                qTable[i,j,0] = initialQValue;
+                qTable[i,j,1] = -1 * initialQValue; 
+            }
+        }
+    }
 }
 
 public class ValueShowingTable: QTable
@@ -76,7 +88,7 @@ public class ValueShowingTable: QTable
 
     public override int GetShowingIndex(Card showing)
     {
-        return showing.Value() - 2;;
+        return showing.Value() - 2;
     }
 }
 

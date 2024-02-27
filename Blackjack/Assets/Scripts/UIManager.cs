@@ -196,6 +196,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void SeedQTable(float initialQValue=5.0f)
+    {
+        game.SeedQTable(initialQValue);
+        for(int i=0; i<10; i++)
+        {
+            for(int j=0; j<QTableMatrix.GetLength(1); j++)
+            {
+                QTableMatrix[i,j].ChangeColor(initialQValue,true);
+                QTableMatrix[i,j].ChangeColor(-1*initialQValue,false);
+            }
+        }
+    }
+
     private void SimpleUpdate()
     {
         alphaSelection.SetActive(false);

@@ -181,4 +181,9 @@ public class BlackjackGame : MonoBehaviour
     {
         player1.SetStateSpace(qTableIndex);
     }
+
+    public void SeedQTable(float initialQValue)
+    {
+        player1.SeedQTable(initialQValue);
+    }
 }
