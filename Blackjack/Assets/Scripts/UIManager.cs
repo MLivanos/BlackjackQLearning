@@ -275,4 +275,9 @@ public class UIManager : MonoBehaviour
     {
         game.Run();
     }
+
+    public void Play()
+    {
+        
+    }
 }

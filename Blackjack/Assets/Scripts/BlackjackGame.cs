@@ -15,6 +15,7 @@ public class BlackjackGame : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
         CreateQLearner();
         player1.ResetHistory();
         player2.ResetHistory();
