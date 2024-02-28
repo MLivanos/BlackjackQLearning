@@ -11,7 +11,7 @@ public class BlackjackGame : MonoBehaviour
     CardDisplay cardDisplay;
     QLearnerPlayer player1;
     Deck deck;
-    float nWins = 0.0f;
+    bool calculatingValue;
     int epochs = 100000;
 
     private void Start()
@@ -41,8 +41,8 @@ public class BlackjackGame : MonoBehaviour
         DisplayCard(p1Cards[1], true, false);
         DisplayCard(p2Cards[0], false, true);
         DisplayCard(p2Cards[1], false, true);
-        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
         int p2Value = PlayPlayer(1, p2Cards, p1Cards[1]);
+        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
         int outcome = DetermineOutcome(p1Value, p2Value);
         float p1Reward = outcome == 1 ? 1.0f : outcome == 2 ? -1.0f : 0;
         float p2Reward = outcome == 1 ? -1.0f : outcome == 2 ? 1.0f : 0;
@@ -50,10 +50,6 @@ public class BlackjackGame : MonoBehaviour
         players[1].ModifyLastReward(p2Reward);
         TrainPlayer(players[0]);
         TrainPlayer(players[1]);
-        if (outcome == 1)
-        {
-            nWins ++;
-        }
         players[0].ResetHistory();
         players[1].ResetHistory();
     }
@@ -176,6 +172,7 @@ public class BlackjackGame : MonoBehaviour
 
     public void SetOpponent(int opponentIndex)
     {
+        player2 = gameObject.AddComponent(opponentPrefabs[opponentIndex].GetType()) as BlackjackPlayer;
         players[1] = opponentPrefabs[opponentIndex];
     }
 
@@ -210,5 +207,10 @@ public class BlackjackGame : MonoBehaviour
     public void ClearQTable()
     {
         player1.ClearTable();
+    }
+
+    public BlackjackPlayer GetPlayer2()
+    {
+        return players[1];
     }
 }
