@@ -13,6 +13,12 @@ public class CardDisplay : MonoBehaviour
     [SerializeField] Vector3 agentPosition;
     [SerializeField] Vector3 cardOffset;
     [SerializeField] float speed;
+
+    private void Awake()
+    {
+        BlackjackGame game = FindObjectsOfType<BlackjackGame>()[0];
+        game.SetDisplay(this);
+    }
     
     private static Dictionary<string, int> cardIndexLookup = new Dictionary<string, int>()
     {

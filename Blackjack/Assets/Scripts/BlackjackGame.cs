@@ -8,6 +8,7 @@ public class BlackjackGame : MonoBehaviour
     [SerializeField] BlackjackPlayer[] opponentPrefabs;
     [SerializeField] BlackjackPlayer player2;
     [SerializeField] UIManager uiManager;
+    CardDisplay cardDisplay;
     QLearnerPlayer player1;
     Deck deck;
     float nWins = 0.0f;
@@ -16,6 +17,7 @@ public class BlackjackGame : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(this);
+        deck = new Deck();
         CreateQLearner();
         player1.ResetHistory();
         player2.ResetHistory();
@@ -35,6 +37,10 @@ public class BlackjackGame : MonoBehaviour
     {
         List<Card> p1Cards = DrawHand();
         List<Card> p2Cards = DrawHand();
+        DisplayCard(p1Cards[0], false, false);
+        DisplayCard(p1Cards[1], true, false);
+        DisplayCard(p2Cards[0], false, true);
+        DisplayCard(p2Cards[1], false, true);
         int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
         int p2Value = PlayPlayer(1, p2Cards, p1Cards[1]);
         int outcome = DetermineOutcome(p1Value, p2Value);
@@ -64,6 +70,10 @@ public class BlackjackGame : MonoBehaviour
     {
         gameObject.AddComponent<QLearnerPlayer>();
         player1 = gameObject.GetComponent<QLearnerPlayer>();
+        if (uiManager == null)
+        {
+            return;
+        }
         uiManager.InstantiateQLearner();
     }
 
@@ -106,6 +116,7 @@ public class BlackjackGame : MonoBehaviour
         while(currentValue < 21 && players[playerIndex].Hit(cards, showing))
         {
             Card newCard = deck.Draw();
+            DisplayCard(newCard, false, playerIndex==1);
             List<Card> oldHand = new List<Card>(cards);
             cards.Add(newCard);
             List<Card> newHand = new List<Card>(cards);
@@ -117,6 +128,15 @@ public class BlackjackGame : MonoBehaviour
             players[playerIndex].AddToHistory(false, 0.0f, cards, null);
         }
         return currentValue;
+    }
+
+    private void DisplayCard(Card newCard, bool isFaceDown, bool isPlayerCard)
+    {
+        if (cardDisplay == null)
+        {
+            return;
+        }
+        cardDisplay.CreateCard(newCard, isFaceDown, isPlayerCard);
     }
 
     private float ClampHyperparameter(string hyperparameter, float minValue=0.0f, float maxValue=1.0f)
@@ -172,9 +192,9 @@ public class BlackjackGame : MonoBehaviour
         }
     }
 
-    public void SetIteration(string iteration)
+    public void SetDisplay(CardDisplay display)
     {
-
+        cardDisplay = display;
     }
 
     public void SetStateSpace(int qTableIndex)
