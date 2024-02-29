@@ -51,7 +51,7 @@ public class BlackjackGame : MonoBehaviour
         players[1].ResetHistory();
     }
 
-    private IEnumerator PlayWithHuman()
+    public IEnumerator PlayWithHuman()
     {
         List<Card> p1Cards = DrawHand();
         List<Card> p2Cards = DrawHand();
@@ -62,6 +62,11 @@ public class BlackjackGame : MonoBehaviour
         HumanPlayer human = player2 as HumanPlayer;
         StartCoroutine(PlayHuman(human, p2Cards, p1Cards[0]));
         while(isWaitingForHuman)
+        {
+            yield return null;
+        }
+        StartCoroutine(cardDisplay.FlipFaceDownCard());
+        while(cardDisplay.isRotating)
         {
             yield return null;
         }

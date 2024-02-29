@@ -13,6 +13,9 @@ public class CardDisplay : MonoBehaviour
     [SerializeField] Vector3 agentPosition;
     [SerializeField] Vector3 cardOffset;
     [SerializeField] float speed;
+    [SerializeField] float rotateSpeed;
+    private GameObject hiddenCard;
+    public bool isRotating{get; private set;}
 
     private void Awake()
     {
@@ -55,6 +58,7 @@ public class CardDisplay : MonoBehaviour
         if(isFaceDown)
         {
             newCard.transform.Rotate(Vector3.right * 180);
+            hiddenCard = newCard;
         }
         StartCoroutine(SendCard(newCard, endPosition));
         endPosition += cardOffset;
@@ -76,5 +80,20 @@ public class CardDisplay : MonoBehaviour
             card.transform.Translate(direction * speed * Time.deltaTime, Space.World);
             yield return null;
         }
+        card.transform.position = endPosition;
+    }
+
+    public IEnumerator FlipFaceDownCard()
+    {
+        isRotating = true;
+        while(hiddenCard.transform.eulerAngles.x < 91 || hiddenCard.transform.eulerAngles.x > 271)
+        {
+            hiddenCard.transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime, Space.World);
+            yield return null;
+        }
+        Vector3 flippedTransform = hiddenCard.transform.eulerAngles;
+        flippedTransform.x = 270.0f;
+        hiddenCard.transform.eulerAngles = flippedTransform;
+        isRotating = false;
     }
 }
