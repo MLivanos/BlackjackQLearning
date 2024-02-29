@@ -4,10 +4,12 @@ using UnityEngine.SceneManagement;
 public class GameInputManager : MonoBehaviour
 {
     HumanPlayer player;
+    CardDisplay display;
 
     private void Awake()
     {
         BlackjackGame game = FindObjectsOfType<BlackjackGame>()[0];
+        display = FindObjectsOfType<CardDisplay>()[0];
         game.SetOpponent(2);
         player = game.gameObject.GetComponent<HumanPlayer>();
     }
@@ -17,13 +19,13 @@ public class GameInputManager : MonoBehaviour
         player.RecieveMove(move);
     }
 
-    public void NewHand()
-    {
-        SceneManager.LoadScene(1);
-    }
-
     public void BackToLearning()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void Reset()
+    {
+        StartCoroutine(display.ResetGame());
     }
 }

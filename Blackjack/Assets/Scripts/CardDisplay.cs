@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,16 +15,11 @@ public class CardDisplay : MonoBehaviour
     [SerializeField] Vector3 cardOffset;
     [SerializeField] float speed;
     [SerializeField] float rotateSpeed;
+    private BlackjackGame game;
+    private List<GameObject> aliveCards = new List<GameObject>();
     private GameObject hiddenCard;
+    private Vector3[] initialPositions;
     public bool isRotating{get; private set;}
-
-    private void Awake()
-    {
-        BlackjackGame game = FindObjectsOfType<BlackjackGame>()[0];
-        game.SetDisplay(this);
-        StartCoroutine(game.PlayWithHuman());
-    }
-    
     private static Dictionary<string, int> cardIndexLookup = new Dictionary<string, int>()
     {
         { "J", 9},
@@ -31,6 +27,33 @@ public class CardDisplay : MonoBehaviour
         { "K", 11},
         { "A", 12},
     };
+
+    private void Awake()
+    {
+        SaveInitialPositions();
+        ConnectWithGame();
+        StartCoroutine(game.PlayWithHuman());
+    }
+
+    private void SaveInitialPositions()
+    {
+        initialPositions = new Vector3[2];
+        initialPositions[0] = new Vector3(0,0,0) + playerPosition;
+        initialPositions[1] = new Vector3(0,0,0) + agentPosition;
+    }
+
+    public void ResetPositions()
+    {
+        playerPosition = initialPositions[0];
+        agentPosition = initialPositions[1];
+        SaveInitialPositions();
+    }
+
+    private void ConnectWithGame()
+    {
+        game = FindObjectsOfType<BlackjackGame>()[0];
+        game.SetDisplay(this);
+    }
 
     private int FindIndex(string valueString)
     {
@@ -71,12 +94,14 @@ public class CardDisplay : MonoBehaviour
         {
             agentPosition += cardOffset;
         }
+        aliveCards.Add(newCard);
     }
 
-    private IEnumerator SendCard(GameObject card, Vector3 endPosition)
+    private IEnumerator SendCard(GameObject card, Vector3 endPosition, bool sendForward = true)
     {
         Vector3 direction = endPosition - card.transform.position;
-        while(card.transform.position.z > endPosition.z)
+        Func<float, float, bool> atPosition = sendForward ? ((z1, z2) => z1 < z2) : ((z1, z2) => z2 < z1);
+        while(!atPosition(card.transform.position.z, endPosition.z))
         {
             card.transform.Translate(direction * speed * Time.deltaTime, Space.World);
             yield return null;
@@ -87,14 +112,27 @@ public class CardDisplay : MonoBehaviour
     public IEnumerator FlipFaceDownCard()
     {
         isRotating = true;
-        while(hiddenCard.transform.eulerAngles.x < 91 || hiddenCard.transform.eulerAngles.x > 271)
+        float timer = 0.0f;
+        while(timer < rotateSpeed / 360.0f)
         {
             hiddenCard.transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime, Space.World);
+            timer += Time.deltaTime;
             yield return null;
         }
         Vector3 flippedTransform = hiddenCard.transform.eulerAngles;
         flippedTransform.x = 270.0f;
         hiddenCard.transform.eulerAngles = flippedTransform;
         isRotating = false;
+    }
+
+    public IEnumerator ResetGame()
+    {
+        foreach(GameObject card in aliveCards)
+        {
+            StartCoroutine(SendCard(card, startPosition, false));
+        }
+        yield return new WaitForSeconds(0.5f);
+        ResetPositions();
+        StartCoroutine(game.PlayWithHuman());
     }
 }
