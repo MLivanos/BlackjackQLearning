@@ -61,7 +61,7 @@ public class BlackjackGame : MonoBehaviour
             yield return null;
         }
         int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
-        DisplayOutcome(p1Value, humanValue);
+        DisplayOutcome(p1Value, humanValue, p1Cards.Count, p2Cards.Count);
     }
 
     private IEnumerator DealPhysicalCards(List<Card> p1Cards, List<Card> p2Cards)
@@ -77,23 +77,37 @@ public class BlackjackGame : MonoBehaviour
         yield return new WaitForSeconds(cardWaitTime);
     }
 
-    private void DisplayOutcome(int p1Value, int p2Value)
+    private void DisplayOutcome(int p1Value, int p2Value, int p1Cards, int p2Cards)
     {
+        string message = "";
+        if ((p1Value == 21 && p1Cards == 2) || p2Value == 21 && p2Cards == 2)
+        {
+            message = "Blackjack!\n";
+        }
+        if (p1Value > 21)
+        {
+            message += "Agent Busts!\n";
+        }
+        if (p2Value > 21)
+        {
+            message += "You Bust!\n";
+        }
         int outcome = DetermineOutcome(p1Value, humanValue);
         switch (outcome)
         {
             case 0:
-                cardDisplay.DisplayMessage("Push!");
+                message += "Push!";
                 break;
             case 1:
-                cardDisplay.DisplayMessage("Agent wins!");
+                message += "Agent wins!";
                 break;
             case 2:
-                cardDisplay.DisplayMessage("You win!");
+                message = "You win!";
                 break;
             default:
                 break;
         }
+        cardDisplay.DisplayMessage(message);
     }
 
     private IEnumerator PlayHuman(HumanPlayer human, List<Card> cards, Card showing)
