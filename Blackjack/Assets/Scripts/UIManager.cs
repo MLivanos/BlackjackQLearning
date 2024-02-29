@@ -226,7 +226,7 @@ public class UIManager : MonoBehaviour
         alphaSelection.SetActive(false);
         gammaSelection.SetActive(false);
         game.SetAlpha("1.0");
-        game.SetGamma("1.0");
+        game.SetGamma("0.0");
     }
 
     private void LearningRateUpdate()

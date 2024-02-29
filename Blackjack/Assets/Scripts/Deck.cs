@@ -6,6 +6,7 @@ public class Deck
 {
     private List<Card> deck;
     private List<Card> discarded;
+    private Random randomNumberGenerator = new Random();
 
     public Deck()
     {
@@ -31,7 +32,6 @@ public class Deck
 
     public void ShuffleDeck()
     {
-        Random randomNumberGenerator = new Random();
         List<Card> shuffledDeck = new List<Card>();
         for(int i=0; i<deck.Count; i++)
         {
