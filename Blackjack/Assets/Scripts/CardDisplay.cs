@@ -21,6 +21,7 @@ public class CardDisplay : MonoBehaviour
     {
         BlackjackGame game = FindObjectsOfType<BlackjackGame>()[0];
         game.SetDisplay(this);
+        StartCoroutine(game.PlayWithHuman());
     }
     
     private static Dictionary<string, int> cardIndexLookup = new Dictionary<string, int>()

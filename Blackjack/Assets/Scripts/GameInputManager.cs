@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameInputManager : MonoBehaviour
 {
@@ -16,5 +15,15 @@ public class GameInputManager : MonoBehaviour
     public void SendMoveToPlayer(bool move)
     {
         player.RecieveMove(move);
+    }
+
+    public void NewHand()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void BackToLearning()
+    {
+        SceneManager.LoadScene(0);
     }
 }

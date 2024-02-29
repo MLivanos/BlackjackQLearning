@@ -26,14 +26,6 @@ public class BlackjackGame : MonoBehaviour
         players[1] = player2;
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown("g"))
-        {
-            StartCoroutine(PlayWithHuman());
-        }
-    }
-
     private void Play()
     {
         List<Card> p1Cards = DrawHand();
