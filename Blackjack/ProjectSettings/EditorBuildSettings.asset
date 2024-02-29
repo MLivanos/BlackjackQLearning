@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Training.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/HiddenFiles/Scenes/Play.unity
+    guid: 268143e27e9124b14ac0bcdcba1197e9
   m_configObjects: {}

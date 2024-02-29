@@ -10728,6 +10728,7 @@ MonoBehaviour:
   opponentPrefabs:
   - {fileID: 7730268496130103380, guid: f73387635e145425f8f69799044f59ab, type: 3}
   - {fileID: 8556220737280924798, guid: 8bb29b0851fdf4cf9b3b510efb943be2, type: 3}
+  - {fileID: 9013013855124082753, guid: 7fab7f0d2d103471b9b4ee246c432255, type: 3}
   player2: {fileID: 7730268496130103380, guid: f73387635e145425f8f69799044f59ab, type: 3}
   uiManager: {fileID: 2109616063}
 --- !u!4 &871023978
@@ -20491,6 +20492,8 @@ MonoBehaviour:
   m_Options:
     m_Options:
     - m_Text: Q(s,a) = r + max(Q(s')
+      m_Image: {fileID: 0}
+    - m_Text: "Q(s,a) = r + \u03B3max(Q(s')"
       m_Image: {fileID: 0}
     - m_Text: "Q(s,a) = (1-\u03B1)Q(s,a)+\u03B1(r + max(Q(s'))"
       m_Image: {fileID: 0}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -35,9 +36,12 @@ public class UIManager : MonoBehaviour
                 SimpleUpdate();
                 break;
             case 1:
-                LearningRateUpdate();
+                SimpleGammaUpdate();
                 break;
             case 2:
+                LearningRateUpdate();
+                break;
+            case 3:
                 FullUpdate();
                 break;
             default:
@@ -229,12 +233,20 @@ public class UIManager : MonoBehaviour
         game.SetGamma("0.0");
     }
 
+    private void SimpleGammaUpdate()
+    {
+        alphaSelection.SetActive(false);
+        gammaSelection.SetActive(true);
+        game.SetGamma(GetValueFromText(gammaSelection));
+        game.SetAlpha("1.0");
+    }
+
     private void LearningRateUpdate()
     {
         alphaSelection.SetActive(true);
         gammaSelection.SetActive(false);
-        game.SetGamma(GetValueFromText(gammaSelection));
-        game.SetAlpha("1.0");
+        game.SetAlpha(GetValueFromText(alphaSelection));
+        game.SetGamma("0.0");
     }
 
     private void FullUpdate()
@@ -278,6 +290,6 @@ public class UIManager : MonoBehaviour
 
     public void Play()
     {
-        
+        SceneManager.LoadScene(1);
     }
 }
