@@ -8,26 +8,22 @@ public class BlackjackGame : MonoBehaviour
     [SerializeField] BlackjackPlayer[] opponentPrefabs;
     [SerializeField] BlackjackPlayer player2;
     [SerializeField] UIManager uiManager;
+    CardDisplay cardDisplay;
     QLearnerPlayer player1;
     Deck deck;
-    float nWins = 0.0f;
+    bool isWaitingForHuman;
+    int humanValue;
     int epochs = 100000;
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
+        deck = new Deck();
         CreateQLearner();
         player1.ResetHistory();
         player2.ResetHistory();
         players[0] = player1;
         players[1] = player2;
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown("g"))
-        {
-            Play();
-        }
     }
 
     private void Play()
@@ -43,12 +39,99 @@ public class BlackjackGame : MonoBehaviour
         players[1].ModifyLastReward(p2Reward);
         TrainPlayer(players[0]);
         TrainPlayer(players[1]);
-        if (outcome == 1)
-        {
-            nWins ++;
-        }
         players[0].ResetHistory();
         players[1].ResetHistory();
+    }
+
+    public IEnumerator PlayWithHuman()
+    {
+        List<Card> p1Cards = DrawHand();
+        List<Card> p2Cards = DrawHand();
+        StartCoroutine(DealPhysicalCards(p1Cards, p2Cards));
+        HumanPlayer human = player2 as HumanPlayer;
+        StartCoroutine(PlayHuman(human, p2Cards, p1Cards[0]));
+        while(isWaitingForHuman)
+        {
+            yield return null;
+        }
+        StartCoroutine(cardDisplay.FlipFaceDownCard());
+        yield return new WaitForSeconds(0.5f);
+        while(cardDisplay.isRotating)
+        {
+            yield return null;
+        }
+        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
+        DisplayOutcome(p1Value, humanValue, p1Cards.Count, p2Cards.Count);
+    }
+
+    private IEnumerator DealPhysicalCards(List<Card> p1Cards, List<Card> p2Cards)
+    {
+        float cardWaitTime = 0.5f;
+        DisplayCard(p2Cards[0], false, true);
+        yield return new WaitForSeconds(cardWaitTime);
+        DisplayCard(p2Cards[1], false, true);
+        yield return new WaitForSeconds(cardWaitTime);
+        DisplayCard(p1Cards[0], false, false);
+        yield return new WaitForSeconds(cardWaitTime);
+        DisplayCard(p1Cards[1], true, false);
+        yield return new WaitForSeconds(cardWaitTime);
+    }
+
+    private void DisplayOutcome(int p1Value, int p2Value, int p1Cards, int p2Cards)
+    {
+        string message = "";
+        if ((p1Value == 21 && p1Cards == 2) || p2Value == 21 && p2Cards == 2)
+        {
+            message = "Blackjack!\n";
+        }
+        if (p1Value > 21)
+        {
+            message += "Agent Busts!\n";
+        }
+        if (p2Value > 21)
+        {
+            message += "You Bust!\n";
+        }
+        int outcome = DetermineOutcome(p1Value, humanValue);
+        switch (outcome)
+        {
+            case 0:
+                message += "Push!";
+                break;
+            case 1:
+                message += "Agent wins!";
+                break;
+            case 2:
+                message = "You win!";
+                break;
+            default:
+                break;
+        }
+        cardDisplay.DisplayMessage(message);
+    }
+
+    private IEnumerator PlayHuman(HumanPlayer human, List<Card> cards, Card showing)
+    {
+        isWaitingForHuman = true;
+        humanValue = human.GetValue(cards);
+        while(humanValue < 21)
+        {
+            human.Hit(cards, showing);
+            while(!human.moveIsSet)
+            {
+                yield return null;
+            }
+            if(!human.move)
+            {
+                break;
+            }
+            Card newCard = deck.Draw();
+            DisplayCard(newCard, false, true);
+            cards.Add(newCard);
+            humanValue = human.GetValue(cards);
+        }
+        humanValue = human.GetValue(cards);
+        isWaitingForHuman = false;
     }
 
     private List<Card> DrawHand()
@@ -63,6 +146,10 @@ public class BlackjackGame : MonoBehaviour
     {
         gameObject.AddComponent<QLearnerPlayer>();
         player1 = gameObject.GetComponent<QLearnerPlayer>();
+        if (uiManager == null)
+        {
+            return;
+        }
         uiManager.InstantiateQLearner();
     }
 
@@ -105,6 +192,7 @@ public class BlackjackGame : MonoBehaviour
         while(currentValue < 21 && players[playerIndex].Hit(cards, showing))
         {
             Card newCard = deck.Draw();
+            DisplayCard(newCard, false, playerIndex==1);
             List<Card> oldHand = new List<Card>(cards);
             cards.Add(newCard);
             List<Card> newHand = new List<Card>(cards);
@@ -116,6 +204,15 @@ public class BlackjackGame : MonoBehaviour
             players[playerIndex].AddToHistory(false, 0.0f, cards, null);
         }
         return currentValue;
+    }
+
+    private void DisplayCard(Card newCard, bool isFaceDown, bool isPlayerCard)
+    {
+        if (cardDisplay == null)
+        {
+            return;
+        }
+        cardDisplay.CreateCard(newCard, isFaceDown, isPlayerCard);
     }
 
     private float ClampHyperparameter(string hyperparameter, float minValue=0.0f, float maxValue=1.0f)
@@ -155,6 +252,7 @@ public class BlackjackGame : MonoBehaviour
 
     public void SetOpponent(int opponentIndex)
     {
+        player2 = gameObject.AddComponent(opponentPrefabs[opponentIndex].GetType()) as BlackjackPlayer;
         players[1] = opponentPrefabs[opponentIndex];
     }
 
@@ -171,9 +269,9 @@ public class BlackjackGame : MonoBehaviour
         }
     }
 
-    public void SetIteration(string iteration)
+    public void SetDisplay(CardDisplay display)
     {
-
+        cardDisplay = display;
     }
 
     public void SetStateSpace(int qTableIndex)
@@ -189,5 +287,10 @@ public class BlackjackGame : MonoBehaviour
     public void ClearQTable()
     {
         player1.ClearTable();
+    }
+
+    public BlackjackPlayer GetPlayer2()
+    {
+        return players[1];
     }
 }

@@ -36,7 +36,11 @@ public class QLearnerPlayer : BlackjackPlayer
 
     protected override void Start()
     {
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        GameObject uiManagerObject = GameObject.Find("UIManager");
+        if (uiManagerObject)
+        {
+            uiManager = uiManagerObject.GetComponent<UIManager>();
+        }
         base.Start();
         SetStateSpace();
     }
@@ -64,6 +68,10 @@ public class QLearnerPlayer : BlackjackPlayer
         }
         float newQValue = (1-alpha) * oldQValue + alpha * (reward + gamma * argmaxQ);
         qTable.SetEntry(cards, showing, action, newQValue);
+        if (uiManager == null)
+        {
+            return;
+        }
         uiManager.UpdateCell(qTable.GetValue(cards) - 2, qTable.GetShowingIndex(showing), newQValue, action == 0);
     }
 
