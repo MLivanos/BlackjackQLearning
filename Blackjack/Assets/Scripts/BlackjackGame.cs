@@ -45,9 +45,28 @@ public class BlackjackGame : MonoBehaviour
 
     public IEnumerator PlayWithHuman()
     {
-        float cardWaitTime = 0.5f;
         List<Card> p1Cards = DrawHand();
         List<Card> p2Cards = DrawHand();
+        StartCoroutine(DealPhysicalCards(p1Cards, p2Cards));
+        HumanPlayer human = player2 as HumanPlayer;
+        StartCoroutine(PlayHuman(human, p2Cards, p1Cards[0]));
+        while(isWaitingForHuman)
+        {
+            yield return null;
+        }
+        StartCoroutine(cardDisplay.FlipFaceDownCard());
+        yield return new WaitForSeconds(0.5f);
+        while(cardDisplay.isRotating)
+        {
+            yield return null;
+        }
+        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
+        DisplayOutcome(p1Value, humanValue);
+    }
+
+    private IEnumerator DealPhysicalCards(List<Card> p1Cards, List<Card> p2Cards)
+    {
+        float cardWaitTime = 0.5f;
         DisplayCard(p2Cards[0], false, true);
         yield return new WaitForSeconds(cardWaitTime);
         DisplayCard(p2Cards[1], false, true);
@@ -56,20 +75,25 @@ public class BlackjackGame : MonoBehaviour
         yield return new WaitForSeconds(cardWaitTime);
         DisplayCard(p1Cards[1], true, false);
         yield return new WaitForSeconds(cardWaitTime);
-        HumanPlayer human = player2 as HumanPlayer;
-        StartCoroutine(PlayHuman(human, p2Cards, p1Cards[0]));
-        while(isWaitingForHuman)
-        {
-            yield return null;
-        }
-        StartCoroutine(cardDisplay.FlipFaceDownCard());
-        yield return new WaitForSeconds(cardWaitTime);
-        while(cardDisplay.isRotating)
-        {
-            yield return null;
-        }
-        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
+    }
+
+    private void DisplayOutcome(int p1Value, int p2Value)
+    {
         int outcome = DetermineOutcome(p1Value, humanValue);
+        switch (outcome)
+        {
+            case 0:
+                cardDisplay.DisplayMessage("Push!");
+                break;
+            case 1:
+                cardDisplay.DisplayMessage("Agent wins!");
+                break;
+            case 2:
+                cardDisplay.DisplayMessage("You win!");
+                break;
+            default:
+                break;
+        }
     }
 
     private IEnumerator PlayHuman(HumanPlayer human, List<Card> cards, Card showing)

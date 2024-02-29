@@ -15,6 +15,7 @@ public class CardDisplay : MonoBehaviour
     [SerializeField] Vector3 cardOffset;
     [SerializeField] float speed;
     [SerializeField] float rotateSpeed;
+    [SerializeField] GameInputManager inputManager;
     private BlackjackGame game;
     private List<GameObject> aliveCards = new List<GameObject>();
     private GameObject hiddenCard;
@@ -134,5 +135,10 @@ public class CardDisplay : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         ResetPositions();
         StartCoroutine(game.PlayWithHuman());
+    }
+
+    public void DisplayMessage(string message)
+    {
+        StartCoroutine(inputManager.DisplayMessage(message));
     }
 }
