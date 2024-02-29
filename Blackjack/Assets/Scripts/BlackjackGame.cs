@@ -11,7 +11,8 @@ public class BlackjackGame : MonoBehaviour
     CardDisplay cardDisplay;
     QLearnerPlayer player1;
     Deck deck;
-    bool calculatingValue;
+    bool isWaitingForHuman;
+    int humanValue;
     int epochs = 100000;
 
     private void Start()
@@ -29,7 +30,7 @@ public class BlackjackGame : MonoBehaviour
     {
         if(Input.GetKeyDown("g"))
         {
-            Play();
+            StartCoroutine(PlayWithHuman());
         }
     }
 
@@ -37,12 +38,8 @@ public class BlackjackGame : MonoBehaviour
     {
         List<Card> p1Cards = DrawHand();
         List<Card> p2Cards = DrawHand();
-        DisplayCard(p1Cards[0], false, false);
-        DisplayCard(p1Cards[1], true, false);
-        DisplayCard(p2Cards[0], false, true);
-        DisplayCard(p2Cards[1], false, true);
-        int p2Value = PlayPlayer(1, p2Cards, p1Cards[1]);
         int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
+        int p2Value = PlayPlayer(1, p2Cards, p1Cards[1]);
         int outcome = DetermineOutcome(p1Value, p2Value);
         float p1Reward = outcome == 1 ? 1.0f : outcome == 2 ? -1.0f : 0;
         float p2Reward = outcome == 1 ? -1.0f : outcome == 2 ? 1.0f : 0;
@@ -52,6 +49,49 @@ public class BlackjackGame : MonoBehaviour
         TrainPlayer(players[1]);
         players[0].ResetHistory();
         players[1].ResetHistory();
+    }
+
+    private IEnumerator PlayWithHuman()
+    {
+        List<Card> p1Cards = DrawHand();
+        List<Card> p2Cards = DrawHand();
+        DisplayCard(p1Cards[0], false, false);
+        DisplayCard(p1Cards[1], true, false);
+        DisplayCard(p2Cards[0], false, true);
+        DisplayCard(p2Cards[1], false, true);
+        HumanPlayer human = player2 as HumanPlayer;
+        StartCoroutine(PlayHuman(human, p2Cards, p1Cards[0]));
+        while(isWaitingForHuman)
+        {
+            yield return null;
+        }
+        int p1Value = PlayPlayer(0, p1Cards, p2Cards[0]);
+        int outcome = DetermineOutcome(p1Value, humanValue);
+        Debug.Log(outcome);
+    }
+
+    private IEnumerator PlayHuman(HumanPlayer human, List<Card> cards, Card showing)
+    {
+        isWaitingForHuman = true;
+        humanValue = human.GetValue(cards);
+        while(humanValue < 21)
+        {
+            human.Hit(cards, showing);
+            while(!human.moveIsSet)
+            {
+                yield return null;
+            }
+            if(!human.move)
+            {
+                break;
+            }
+            Card newCard = deck.Draw();
+            DisplayCard(newCard, false, true);
+            cards.Add(newCard);
+            humanValue = human.GetValue(cards);
+        }
+        humanValue = human.GetValue(cards);
+        isWaitingForHuman = false;
     }
 
     private List<Card> DrawHand()

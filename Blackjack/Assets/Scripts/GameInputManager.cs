@@ -10,7 +10,7 @@ public class GameInputManager : MonoBehaviour
     {
         BlackjackGame game = FindObjectsOfType<BlackjackGame>()[0];
         game.SetOpponent(2);
-        player = (HumanPlayer)game.GetPlayer2();
+        player = game.gameObject.GetComponent<HumanPlayer>();
     }
 
     public void SendMoveToPlayer(bool move)

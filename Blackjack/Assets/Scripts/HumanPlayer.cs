@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HumanPlayer : BlackjackPlayer
 {
-    private bool move;
-    private bool moveIsSet = false;
+    public bool move{get; private set;}
+    public bool moveIsSet{get; private set;}
     private bool isWaitingForMove = false;
 
     protected override void Start()
@@ -22,11 +22,11 @@ public class HumanPlayer : BlackjackPlayer
     private IEnumerator WaitForResponse()
     {
         isWaitingForMove = true;
+        moveIsSet = false;
         while(!moveIsSet)
         {
             yield return null;
         }
-        moveIsSet = false;
         isWaitingForMove = false;
     }
 
