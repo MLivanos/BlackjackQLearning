@@ -6,6 +6,8 @@
 
 <img width="844" alt="Screenshot 2024-02-29 at 2 46 21 PM" src="https://github.com/MLivanos/BlackjackQLearning/assets/59032623/c75f5b25-1e4e-4229-aae0-6f8b86226867">
 
+<p><a href="https://prodigiousmike.itch.io/blackjack-qlearner"><img alt="Static Badge" src="https://img.shields.io/badge/PLAY-black?style=for-the-badge&logo=unity&logoColor=white&labelColor=black&color=black&link=mlivanos.github.io%2FSearchAlgorithmVisualizer%2F" style="width:225px;"/></a></p>
+
 
 </div>
 
