@@ -92,13 +92,16 @@ public class UIManager : MonoBehaviour
         int numberOfValues = 20;
         int numberOfOpponentValues = currentShowing ? currentShowing.transform.childCount : 1;
         QTableMatrix = new QTableCell[numberOfValues,numberOfOpponentValues];
+        float offset = Screen.width / 41;
         for(int i=0; i<numberOfValues; i++)
         {
             for(int j=0; j<numberOfOpponentValues; j++)
             {
-                GameObject newCell = Instantiate(cellPrefab, QTableCanvas.transform);
+                GameObject newCell = Instantiate(cellPrefab, QTableCanvas.transform, false);
                 QTableMatrix[i,j] = newCell.GetComponent<QTableCell>();
-                newCell.transform.Translate(Vector3.right * j * 20 + Vector3.down * i * 15);
+                newCell.transform.position = new Vector3(23*offset,18*offset,0);
+                newCell.transform.Translate(Vector3.right * j * offset + Vector3.down * i * offset * 0.725f);
+                newCell.SetActive(true);
             }
         }
     }
