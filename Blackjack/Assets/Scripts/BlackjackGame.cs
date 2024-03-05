@@ -47,7 +47,12 @@ public class BlackjackGame : MonoBehaviour
     {
         List<Card> p1Cards = DrawHand();
         List<Card> p2Cards = DrawHand();
+        isWaitingForHuman = true;
         StartCoroutine(DealPhysicalCards(p1Cards, p2Cards));
+        while(isWaitingForHuman)
+        {
+            yield return null;
+        }
         HumanPlayer human = player2 as HumanPlayer;
         StartCoroutine(PlayHuman(human, p2Cards, p1Cards[0]));
         while(isWaitingForHuman)
@@ -75,6 +80,7 @@ public class BlackjackGame : MonoBehaviour
         yield return new WaitForSeconds(cardWaitTime);
         DisplayCard(p1Cards[1], true, false);
         yield return new WaitForSeconds(cardWaitTime);
+        isWaitingForHuman = false;
     }
 
     private void DisplayOutcome(int p1Value, int p2Value, int p1Cards, int p2Cards)

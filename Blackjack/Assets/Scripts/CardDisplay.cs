@@ -114,12 +114,15 @@ public class CardDisplay : MonoBehaviour
     {
         isRotating = true;
         float timer = 0.0f;
+        Vector3 originalPosition = hiddenCard.transform.position;
         while(timer < rotateSpeed / 360.0f)
         {
             hiddenCard.transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime, Space.World);
+            hiddenCard.transform.position = originalPosition + 0.2f * Vector3.up * Mathf.Sin(rotateSpeed*timer*Mathf.PI/180.0f);
             timer += Time.deltaTime;
             yield return null;
         }
+        hiddenCard.transform.position = originalPosition;
         Vector3 flippedTransform = hiddenCard.transform.eulerAngles;
         flippedTransform.x = 270.0f;
         hiddenCard.transform.eulerAngles = flippedTransform;
