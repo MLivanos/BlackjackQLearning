@@ -102,7 +102,7 @@ public class BlackjackGame : MonoBehaviour
                 message += "Agent wins!";
                 break;
             case 2:
-                message = "You win!";
+                message += "You win!";
                 break;
             default:
                 break;
@@ -174,11 +174,11 @@ public class BlackjackGame : MonoBehaviour
         {
             outcome = 1;
         }
-        else if(p1Value > p2Value)
+        else if((!p1Bust && !p2Bust) && p1Value > p2Value)
         {
             outcome = 1;
         }
-        else if(p1Value < p2Value)
+        else if((!p1Bust && !p2Bust) && p1Value < p2Value)
         {
             outcome = 2;
         }
