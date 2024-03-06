@@ -28,6 +28,9 @@ public class QTableCell : MonoBehaviour
         hitValueHistory = new float[100];
         standValueHistory = new float[100];
         differenceValueHistory = new float[100];
+        hitValue = 0.0f;
+        standValue = 0.0f;
+        differenceValue = 0.0f;
         historyIndex = 0;
     }
 
