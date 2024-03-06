@@ -264,6 +264,7 @@ public class BlackjackGame : MonoBehaviour
 
     public void Run()
     {
+        uiManager.UpdateHyperparameters();
         deck = new Deck();
         for(int i=0; i<epochs+1; i++)
         {
