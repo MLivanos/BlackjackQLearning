@@ -62,6 +62,18 @@ public abstract class QTable
             }
         }
     }
+
+    public void Clear()
+    {
+        for(int i=0; i<qTable.GetLength(0); i++)
+        {
+            for(int j=0; j<qTable.GetLength(1); j++)
+            {
+                qTable[i,j,0] = 0;
+                qTable[i,j,1] = 0; 
+            }
+        }
+    }
 }
 
 public class ValueShowingTable: QTable

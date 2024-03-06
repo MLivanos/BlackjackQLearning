@@ -115,7 +115,10 @@ public class QLearnerPlayer : BlackjackPlayer
 
     public void ClearTable()
     {
-        SetStateSpace(stateSpaceIndex);
+        if (qTable != null)
+        {
+            qTable.Clear();
+        }
     }
 
     public void SeedQTable(float initialQValue)

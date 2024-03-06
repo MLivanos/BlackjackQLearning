@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     QTableCell[,] QTableMatrix = new QTableCell[0,0];
     private int iterationIndex = 99;
     private int viewIndex;
+    private int equationIndex;
 
     private void Start()
     {
@@ -30,7 +31,8 @@ public class UIManager : MonoBehaviour
 
     public void SetEquation(int equation)
     {
-        switch (equation)
+        equationIndex = equation;
+        switch (equationIndex)
         {
             case 0:
                 SimpleUpdate();
@@ -47,6 +49,11 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void UpdateHyperparameters()
+    {
+        SetEquation(equationIndex);
     }
 
     public void SetStateSpace(int state)
@@ -108,6 +115,7 @@ public class UIManager : MonoBehaviour
 
     private void ClearQTableCells()
     {
+        game.ClearQTable();
         for(int i=0; i<QTableMatrix.GetLength(0); i++)
         {
             for(int j=0; j<QTableMatrix.GetLength(1); j++)
