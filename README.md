@@ -84,3 +84,5 @@ There is one last button of interest, which is the "Seed" button. Maybe it isn't
 Finally, when you train a Q-Learner you like, click the "Play" button to play against it yourself! How does it do?
 
 Good luck with your machine learning educational goals!
+
+Special thanks to our friends at Ferocious Industries who provided the cards/chips/table for the card game portion free of charge. 
